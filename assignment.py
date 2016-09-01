@@ -12,7 +12,7 @@ def main():  # main function that controls entire program
 
     while user_choice not in valid_choices:
         print("Incorrect Input")
-        print_menu()  # calls the menu again after an incorrect input
+        user_choice = print_menu()  # calls the menu again after an incorrect input
 
     if user_choice == "R":
         required_items(items_list)  # calls the required items function
@@ -33,9 +33,9 @@ def start_menu(cvs_items, items):  # function for the startup menu
 
 
 def print_menu():  # function for the menu that is displayed after initial startup
-    print(
-        "Menu: \n" + "R - List Required Items \n" + "C - List Completed Items \n" + "A - Add New Items \n" + "M - Mark as completed \n" + "Q - Quit \n")
+    print("Menu: \n" + "R - List Required Items \n" + "C - List Completed Items \n" + "A - Add New Items \n" + "M - Mark as completed \n" + "Q - Quit \n")
     choice = input("Enter your choice: ")
+    choice = choice.upper()
     return choice
 
 
@@ -55,6 +55,7 @@ def required_items(items_list):  # function for the check required items option
     else:
         print("Total price of {} item/s is $ {}".format(row_total, price_totals))
 
+    print_menu()
 
 def completed_items(items_list):  # function for the check completed items options
     print("List completed Items: \n")
@@ -71,6 +72,8 @@ def completed_items(items_list):  # function for the check completed items optio
         print("No completed items")
     else:
         print("Total price of {} item/s is $ {}".format(row_total, price_totals))
+
+    print_menu()
 
 
 main()
