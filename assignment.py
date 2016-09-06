@@ -1,5 +1,6 @@
 import csv  # imports the csv module
 
+FILE_NAME = 'items.csv'
 
 def main():  # main function that controls entire program
     valid_choices = ["R", "C", "A", "M", "Q"]
@@ -24,17 +25,20 @@ def main():  # main function that controls entire program
 
 
 def open_csv():
-    items = open('items.csv')
-    csv_items = csv.reader(items)
-    opened_list = list(csv_items)
-    sum_items = len(items.readlines())
-    return opened_list, items, sum_items
+    items_file = open('items.csv')
+    reader = csv.reader(items_file)
+    items = list(reader)
+    for item in items:
+        item[1] = float(item[1])
+        item[2] = int(item[2])
 
+    items_file.close()
+
+    return items
 
 def start_menu(items_list):  # function for the startup menu
     print("Shopping List 1.0 - By Declan Evanson")
-    total_csv_items = items_list[2]
-    print("Successfully loaded {} items from {} \n".format(total_csv_items, items_list[1].name))
+    print("Successfully loaded {} items from {} \n".format(len(items_list), 'items.csv'))
     print(
         "Menu: \n" + "R - List Required Items \n" + "C - List Completed Items \n" + "A - Add New Items \n" + "M - Mark as completed \n" + "Q - Quit \n")
     choice = (input("Enter your choice: "))
@@ -54,7 +58,7 @@ def required_items(items_list):  # function for the check required items option
     print("List required Items: \n")
     price_totals = 0
     row_total = 0
-    for row in items_list[0]:
+    for row in items_list:
         if "r" in row:
             row[1] = float(row[1])
             row[2] = int(row[2])
@@ -73,7 +77,7 @@ def completed_items(items_list):  # function for the check completed items optio
     print("List completed Items: \n")
     price_totals = 0
     row_total = 0
-    for row in items_list[0]:
+    for row in items_list:
         if "c" in row:
             row[1] = float(row[1])
             row[2] = int(row[2])
