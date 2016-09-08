@@ -61,24 +61,16 @@ def mark_items(items_list):
     while True:
         try:
             change_item = int(input("Choose number you wish to change: \n"))
-            break
+            if change_item >= len(required_list) or change_item < -1:
+                print('Incorrect number, please enter one of the numbers above')
+                change_item = int(input("Choose number you wish to change: \n"))
+            else:
+                break
         except ValueError:
             print("Error! Please enter a valid number")
 
-    while change_item > len(required_list) or change_item < -1:
-        print('Incorrect number, please enter one of the numbers above')
-        change_item = int(input("Choose number you wish to change: \n"))
-    for row in required_list:
-        if change_item in row and 'r' in row:
-            row[3] = 'c'
-            print(row[0] + " marked as completed")
-        elif "c" in row:
-            print('That item is already marked as completed')
-
-
-
-
-
+    required_list[change_item][3] = 'c'
+    print(required_list[change_item][0], "has been marked")
 
 def start_menu(items_list):  # function for the startup menu
     print("Shopping List 1.0 - By Declan Evanson")
