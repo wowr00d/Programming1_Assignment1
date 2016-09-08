@@ -3,6 +3,7 @@ import operator
 
 FILE_NAME = 'items.csv'
 
+
 def main():  # main function that controls entire program
     valid_choices = ["R", "C", "A", "M", "Q"]
     items_list = open_csv()
@@ -49,25 +50,36 @@ def mark_items(items_list):
         if "r" in row:
             row[1] = float(row[1])
             row[2] = int(row[2])
-            print("{} {} ${} {}".format(row_total, row[0], row[1], row[2]))
+            print("{} {:<15} ${:<5} ({})".format(row_total, row[0], row[1], row[2]))
             price_totals += row[1]
             row_total += 1
     if price_totals == 0:  # a check to see if there are actually any required items
         print("No required items")
     else:
         print("Total price of {} item/s is ${} \n".format(row_total, price_totals))
-        change_item = input("Choose number you wish to change")
-        change_item = int(change_item)
+        while True:
+            try:
+                change_item = int(input("Choose number you wish to change: \n"))
+                break
+            except ValueError:
+                print("Please enter a valid number")
+            else:
+                print('invalid number')
+                change_item = int(input("Choose number you wish to change: \n"))
         for row in items_list:
-            if change_item in row:
+            if change_item in row and 'r' in row:
                 row[3] = 'c'
-                print(items_list)
+                print(row[0] + " marked as completed")
+            elif change_item in row and 'c' in row:
+                print('That item is already marked as completed')
+
 
 def start_menu(items_list):  # function for the startup menu
     print("Shopping List 1.0 - By Declan Evanson")
     print("Successfully loaded {} items from {} \n".format(len(items_list), 'items.csv'))
     print(
-        "Menu: \n" + "R - List Required Items \n" + "C - List Completed Items \n" + "A - Add New Items \n" + "M - Mark as completed \n" + "Q - Quit \n")
+        "{:-^25} \n".format(
+            'Menu:') + "R - List Required Items \n" + "C - List Completed Items \n" + "A - Add New Items \n" + "M - Mark as completed \n" + "Q - Quit \n")
     choice = (input("Enter your choice: "))
     choice = choice.upper()
     return choice
@@ -75,7 +87,8 @@ def start_menu(items_list):  # function for the startup menu
 
 def print_menu():  # function for the menu that is displayed after initial startup
     print(
-        "Menu: \n" + "R - List Required Items \n" + "C - List Completed Items \n" + "A - Add New Items \n" + "M - Mark as completed \n" + "Q - Quit \n")
+        "{:-^25} \n".format(
+            'Menu:') + "R - List Required Items \n" + "C - List Completed Items \n" + "A - Add New Items \n" + "M - Mark as completed \n" + "Q - Quit \n")
     choice = input("Enter your choice: ")
     choice = choice.upper()
     return choice
@@ -89,7 +102,7 @@ def required_items(items_list):  # function for the check required items option
         if "r" in row:
             row[1] = float(row[1])
             row[2] = int(row[2])
-            print("{} {} ${} {}".format(row_total, row[0], row[1], row[2]))
+            print("{} {:<15} ${:<5} ({})".format(row_total, row[0], row[1], row[2]))
             price_totals += row[1]
             row_total += 1
     if price_totals == 0:  # a check to see if there are actually any required items
@@ -108,7 +121,7 @@ def completed_items(items_list):  # function for the check completed items optio
         if "c" in row:
             row[1] = float(row[1])
             row[2] = int(row[2])
-            print(row_total, row[0], "$ ", row[1], row[2])
+            print("{} {:<15} ${:<5} ({})".format(row_total, row[0], row[1], row[2]))
             price_totals += row[1]
             row_total += 1
     if price_totals == 0:  # a check to see if there are actually any completed items
