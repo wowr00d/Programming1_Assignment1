@@ -29,7 +29,7 @@ def main():  # main function that controls entire program
 
         user_choice = print_menu()
 
-    print("USER CHOSE Q")
+    quit_program(items_list)
 
 
 def open_csv():
@@ -44,9 +44,44 @@ def open_csv():
     items.sort(key=operator.itemgetter(2))
     return items
 
-# def add_items(items_list):
-#     # for row in items_list:
-#     #     items_list.append()
+def quit_program(items_list):
+    with open('items.csv', "w") as output:
+        writer = csv.writer(output, lineterminator='\n')
+        writer.writerows(items_list)
+
+def add_items(items_list):
+    new_list = []
+    priority_list = [1, 2, 3]
+    product_name = input('Product name:')
+    while product_name == "" or product_name == " ":
+        print('ERROR INPUT')
+        product_name = input('Product name:')
+    new_list.append(product_name)
+    while True:
+        try:
+            product_price = float(input("Enter product price:"))
+            if product_price <= 0:
+                print("Price must be greater than $0")
+            else:
+                break
+        except ValueError:
+            print("Error! Please enter a valid number for price")
+    new_list.append(product_price)
+    while True:
+        try:
+            product_number = int(input("Enter priority number (1 or 2 or 3)"))
+            if product_number in priority_list:
+                break
+            else:
+                print('Error! Please enter a valid priority number')
+        except ValueError:
+            print("Error! Please enter a valid number")
+    new_list.append(product_number)
+    new_list.append('r')
+
+    items_list.append(new_list)
+    print("Product {}, $ {} (priority {}) added to shopping list.".format(product_name, product_price, product_number))
+
 
 def mark_items(items_list):
     i = -1
@@ -58,19 +93,23 @@ def mark_items(items_list):
             required_list.append(row)
             print("{} {:<15} ${:<5} ({})".format(row_total, row[0], row[1], row[2]))
             row_total += 1
-    while True:
-        try:
-            change_item = int(input("Choose number you wish to change: \n"))
-            if change_item >= len(required_list) or change_item < -1:
-                print('Incorrect number, please enter one of the numbers above')
+    if not required_list:
+        print('There is nothing here')
+    else:
+        while True:
+            try:
                 change_item = int(input("Choose number you wish to change: \n"))
-            else:
-                break
-        except ValueError:
-            print("Error! Please enter a valid number")
+                if change_item >= len(required_list) or change_item < -1:
+                    print('Incorrect number, please enter one of the numbers above')
+                    change_item = int(input("Choose number you wish to change: \n"))
+                else:
+                    break
+            except ValueError:
+                print("Error! Please enter a valid number")
 
-    required_list[change_item][3] = 'c'
-    print(required_list[change_item][0], "has been marked")
+        required_list[change_item][3] = 'c'
+        print(required_list[change_item][0], "has been marked")
+
 
 def start_menu(items_list):  # function for the startup menu
     print("Shopping List 1.0 - By Declan Evanson")
