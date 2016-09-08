@@ -55,7 +55,7 @@ def mark_items(items_list):
     for row in items_list:
         if "r" in row:
             i += 1
-            required_list.append(items_list[i])
+            required_list.append(row)
             print("{} {:<15} ${:<5} ({})".format(row_total, row[0], row[1], row[2]))
             row_total += 1
     while True:
