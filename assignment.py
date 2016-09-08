@@ -19,7 +19,10 @@ def main():  # main function that controls entire program
             completed_items(items_list)  # calls the completed items function
 
         elif user_choice == "M":
-            mark_items(items_list)  # calls the completed items function
+            mark_items(items_list)  # calls the mark new items function
+
+        elif user_choice == "A":
+            add_items(items_list)  # calls the add new items function
 
         else:
             print("Incorrect Input")
@@ -41,37 +44,40 @@ def open_csv():
     items.sort(key=operator.itemgetter(2))
     return items
 
+# def add_items(items_list):
+#     # for row in items_list:
+#     #     items_list.append()
 
 def mark_items(items_list):
-    print("List required Items: \n")
-    price_totals = 0
+    i = -1
     row_total = 0
+    required_list = []
     for row in items_list:
         if "r" in row:
-            row[1] = float(row[1])
-            row[2] = int(row[2])
+            i += 1
+            required_list.append(items_list[i])
             print("{} {:<15} ${:<5} ({})".format(row_total, row[0], row[1], row[2]))
-            price_totals += row[1]
             row_total += 1
-    if price_totals == 0:  # a check to see if there are actually any required items
-        print("No required items")
-    else:
-        print("Total price of {} item/s is ${} \n".format(row_total, price_totals))
-        while True:
-            try:
-                change_item = int(input("Choose number you wish to change: \n"))
-                break
-            except ValueError:
-                print("Please enter a valid number")
-            else:
-                print('invalid number')
-                change_item = int(input("Choose number you wish to change: \n"))
-        for row in items_list:
-            if change_item in row and 'r' in row:
-                row[3] = 'c'
-                print(row[0] + " marked as completed")
-            elif change_item in row and 'c' in row:
-                print('That item is already marked as completed')
+    while True:
+        try:
+            change_item = int(input("Choose number you wish to change: \n"))
+            break
+        except ValueError:
+            print("Error! Please enter a valid number")
+
+    while change_item > len(required_list) or change_item < -1:
+        print('Incorrect number, please enter one of the numbers above')
+        change_item = int(input("Choose number you wish to change: \n"))
+    for row in required_list:
+        if change_item in row and 'r' in row:
+            row[3] = 'c'
+            print(row[0] + " marked as completed")
+        elif "c" in row:
+            print('That item is already marked as completed')
+
+
+
+
 
 
 def start_menu(items_list):  # function for the startup menu
