@@ -29,10 +29,10 @@ def main():  # main function that controls entire program
 
         user_choice = print_menu()
 
-    quit_program(items_list)
+    quit_program(items_list)  # goes to the save and quit function
 
 
-def open_csv():
+def open_csv():  # function in control of opening the csv and saving contents to a list of lists
     items_file = open('items.csv')
     reader = csv.reader(items_file)
     items = list(reader)
@@ -44,16 +44,59 @@ def open_csv():
     items.sort(key=operator.itemgetter(2))
     return items
 
-def quit_program(items_list):
+
+def quit_program(items_list):  # function that controls the quitting and saving of program
     with open('items.csv', "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         writer.writerows(items_list)
+    print("{} items saved to file items.csv".format(len(items_list)))
+    print("Thankyou for using this program!  \n")
+    print(items_list)
 
-def add_items(items_list):
+
+# def add_item() function
+# new_list = blank list
+# priority_list = 1,2,3
+# get product_name from user input
+# if product_name is blank
+#     print "error!"
+#     get product name from user input
+# elif product_name is integer
+#     print "error! enter letters"
+# add product_name to new_list
+#
+# while True
+#     try
+#         get product_price from user input
+#         convert product_price to integer
+#         if product_price <= 0
+#             print "error, make number bigger than 0"
+#         else
+#             break out of loop
+#     except where product_price is string
+#         print 'error please enter a valid number'
+# add product_price to new_list
+#
+# while True
+#     try
+#         get product_number from user input
+#         convert product_number to integer
+#         if product_number in priority_list
+#             break out of loop
+#         else
+#             print "error please enter one of the priority numbers"
+#     except where product_number is string
+#         print 'error please enter a valid number'
+# add product_number to new_list
+# add 'r'new_list
+# add new_list to items_list
+
+
+def add_items(items_list):  # function in control of error checking the adding items to the list of lists and storing
     new_list = []
     priority_list = [1, 2, 3]
     product_name = input('Product name:')
-    while product_name == "" or product_name == " ":
+    while product_name == "" or product_name == " ":  # checks if input is blank and loops until valid input
         print('ERROR INPUT')
         product_name = input('Product name:')
     new_list.append(product_name)
@@ -79,11 +122,11 @@ def add_items(items_list):
     new_list.append(product_number)
     new_list.append('r')
 
-    items_list.append(new_list)
+    items_list.append(new_list)  # adds new_list to the items_list
     print("Product {}, $ {} (priority {}) added to shopping list.".format(product_name, product_price, product_number))
 
 
-def mark_items(items_list):
+def mark_items(items_list):  # function in control of marking existing required items plus the required error checking
     i = -1
     row_total = 0
     required_list = []
@@ -93,7 +136,7 @@ def mark_items(items_list):
             required_list.append(row)
             print("{} {:<15} ${:<5} ({})".format(row_total, row[0], row[1], row[2]))
             row_total += 1
-    if not required_list:
+    if not required_list:  # checks if there are even any required items to mark
         print('There is nothing here')
     else:
         while True:
@@ -169,4 +212,4 @@ def completed_items(items_list):  # function for the check completed items optio
     return
 
 
-main()
+main() # starts the entire program
